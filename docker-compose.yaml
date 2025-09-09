@@ -1,19 +1,22 @@
-version: '3.8'
+version: "3.8"
 
 services:
   backend:
-    build: ./backend
+    image: abhu1234/project-backend:latest
+    container_name: backend
+    build:
+      context: ./backend
     ports:
       - "5000:5000"
-    env_file:
-      - ./backend/.env
+    restart: always
 
   frontend:
-    build: ./frontend
+    image: abhu1234/project-frontend:latest
+    container_name: frontend
+    build:
+      context: ./frontend
     ports:
-      - "4001:3000"
+      - "3000:80"
     depends_on:
       - backend
-
-
-
+    restart: always
