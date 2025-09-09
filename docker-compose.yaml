@@ -12,7 +12,7 @@ services:
     image: abhu1234/project-frontend:latest
     container_name: frontend
     ports:
-      - "80:80"   # frontend directly on HTTP port 80
+      - "3000:80"   # frontend directly on HTTP port 80
     depends_on:
       - backend
     restart: always
