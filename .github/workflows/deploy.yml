@@ -42,6 +42,7 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd /home/ubuntu/project
+          curl -O https://raw.githubusercontent.com/abhuu123/project/main/docker-compose.yaml
           docker pull abhu1234/project-backend:latest
           docker pull abhu1234/project-frontend:latest
           docker-compose up -d
