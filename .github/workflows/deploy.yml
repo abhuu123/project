@@ -1,0 +1,47 @@
+name: CI/CD Pipeline for Project
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout repo
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # 2. DockerHub login
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    # 3. Build & push backend
+    - name: Build backend image
+      run: docker build -t abhu1234/project-backend:latest ./backend
+    - name: Push backend image
+      run: docker push abhu1234/project-backend:latest
+
+    # 4. Build & push frontend
+    - name: Build frontend image
+      run: docker build -t abhu1234/project-frontend:latest ./frontend
+    - name: Push frontend image
+      run: docker push abhu1234/project-frontend:latest
+
+    # 5. Deploy on EC2
+    - name: Deploy on EC2
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ubuntu
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd /home/ubuntu/project
+          docker pull abhu1234/project-backend:latest
+          docker pull abhu1234/project-frontend:latest
+          docker-compose up -d
