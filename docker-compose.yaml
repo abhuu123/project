@@ -4,8 +4,6 @@ services:
   backend:
     image: abhu1234/project-backend:latest
     container_name: backend
-    build:
-      context: ./backend
     ports:
       - "5000:5000"
     restart: always
@@ -13,8 +11,6 @@ services:
   frontend:
     image: abhu1234/project-frontend:latest
     container_name: frontend
-    build:
-      context: ./frontend
     ports:
       - "3000:80"
     depends_on:
